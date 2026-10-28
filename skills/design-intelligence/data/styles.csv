@@ -1,0 +1,13 @@
+id,context,style,density,radius,shadow,motion,use_when,avoid_when
+sty-01,admin,AntD 默认,high,6,2级克制,subtle,90% 后台系统,需要强品牌识别时
+sty-02,admin,密集数据型,very-high,4,1级,none,大表格/监控台/金融终端,面向客户的界面
+sty-03,admin,品牌化 SaaS,mid,8,2级,standard,对外SaaS、需要品牌感,纯内部工具
+sty-04,admin,深色优先,high,6,2级深色,subtle,监控/开发者工具,打印场景、老年用户
+sty-05,pc,现代极简,low,12,1级,standard,SaaS官网、产品页,展示大量信息
+sty-06,pc,Bento 网格,low-mid,16,2级,standard,产品特性展示,线性叙述场景
+sty-07,pc,品牌强视觉,low,8-16,2-3级,expressive,官网首页、活动页,需快速加载的页面
+sty-08,pc,编辑风 Editorial,low,2,1级,subtle,内容站/博客/媒体,数据密集型产品
+sty-09,mobile,iOS 原生风,mid,10-12,2级,standard,iOS App,Android 为主的用户
+sty-10,mobile,Material You,mid,16-28,2级,standard,Android App,需严格品牌控制
+sty-11,mobile,卡片流,mid,12,1级,subtle,内容社区/资讯,表单密集页面
+sty-12,mobile,电商沉浸,mid,8,1级,standard,商品详情/直播带货,工具类应用

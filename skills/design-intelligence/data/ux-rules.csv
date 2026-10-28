@@ -1,0 +1,31 @@
+id,category,severity,context,issue,do,dont,code_good,code_bad
+ux-001,Accessibility,Critical,all,对比度,正文对背景 >=4.5:1，大字 >=3:1,浅灰文字配白底、低饱和撞色,color:#595959 on #fff,color:#bfbfbf on #fff
+ux-002,Accessibility,Critical,all,键盘可达,所有交互元素 Tab 可达，顺序合理,用 div 做按钮、tabindex=-1 藏关键操作,button 或 role=button+tabindex=0,div onclick
+ux-003,Accessibility,Critical,all,焦点不被遮挡,sticky 头部留焦点滚动空间,焦点元素被固定头部盖住,scroll-margin-top:64px,无 scroll-margin
+ux-004,Touch,Critical,mobile,最小点击尺寸,触屏 >=44x44，桌面 >=32x32,16px 图标当按钮,min-width:44px;min-height:44px,width:16px
+ux-005,Interaction,High,all,焦点可见,自定义 focus ring,outline:none 且无替代,"box-shadow:0 0 0 2px rgba(22,119,255,.2)",outline:none
+ux-006,Accessibility,High,all,不能只靠颜色,颜色+图标/文字/线型,红绿色块表示状态,Tag 内含文字+图标,纯色块
+ux-007,Forms,High,all,输入框有 label,每个字段有可见 label,placeholder 当 label,label 元素,placeholder=手机号
+ux-008,Forms,High,all,错误就近显示,错误紧跟字段下方,所有错误堆在页面顶部,Form.Item help,顶部统一 Alert
+ux-009,Feedback,High,all,提交反馈,按钮 loading+结果提示,点了没反应,Button loading,无状态变化
+ux-010,Interaction,High,all,破坏性操作确认,二次确认并说明后果,直接执行删除,Modal.confirm+影响说明,直接 DELETE
+ux-011,Responsive,High,all,无横向滚动,内容自适应容器宽度,固定 px 宽容器在小屏溢出,max-width:100%;grid 自适应,width:1200px
+ux-012,Responsive,High,all,不禁缩放,允许用户缩放,user-scalable=no,maximum-scale=5,user-scalable=no
+ux-013,Typography,High,all,正文可读,>=14px，移动端 >=16px,12px 正文,font-size:14px（移动 16px）,font-size:12px
+ux-014,Layout,High,all,内容不跳动,图片预留宽高、骨架行数匹配,加载完内容撑开,aspect-ratio / min-height,无占位
+ux-015,Layout,High,all,z-index 层级表,dropdown 1000 / sticky 1100 / modal 1300 / toast 1400,随手写 9999,--z-toast:1400,z-index:9999
+ux-016,Interaction,High,all,hover 不是唯一交互,触屏用 click/tap,关键信息只在 hover 显示,onClick+onFocus,仅 :hover
+ux-017,Performance,High,all,loading 有反馈,骨架屏或 spinner，延迟 300ms 显示,空白冻结,300ms 后显示 Skeleton,立即显示又闪掉
+ux-018,Accessibility,High,all,尊重减少动效,支持 prefers-reduced-motion,忽略系统设置,@media (prefers-reduced-motion),无查询
+ux-019,Animation,High,all,动效克制,一屏最多 1-2 个进场动画,每个元素都 animate,单个 hero 动画,全部 fade-in
+ux-020,Navigation,High,all,返回行为可预测,保留浏览历史,location.replace 破坏后退,router.push,location.replace
+ux-021,Layout,High,all,长 token 可断行,URL/哈希/长 ID 能断,长串撑破容器,overflow-wrap:anywhere,white-space:nowrap
+ux-022,Content,Medium,all,关键文本不截断,截断必须保留完整入口,ellipsis 了事,ellipsis+Tooltip 或详情页,仅 ellipsis
+ux-023,Accessibility,Medium,all,文字可重排,放大 200% 或加大字间距不丢内容,固定高度裁切文字,min-height 而非 height,height:32px
+ux-024,Animation,Medium,all,状态切换可取消,快速连点时能打断前一个过渡,过渡排队播放,CSS transition（天然可打断）,JS 队列动画
+ux-025,Accessibility,Medium,all,不能只靠拖拽,拖拽必须有键盘/按钮替代,只有拖拽一种方式,上移/下移按钮+拖拽,仅 drag
+ux-026,Accessibility,Medium,all,认证不靠记忆,支持密码管理器粘贴，不给解谜,强制记忆、复杂验证码,autocomplete=current-password,禁止粘贴
+ux-027,Animation,Medium,all,轮播可暂停,自动轮播能暂停且默认关闭,自动无限播放,pause on hover+控制按钮,autoplay 无控制
+ux-028,Forms,Medium,all,错误汇总可聚焦,顶部汇总能 Tab 到并跳转,汇总只是文字块,a href=#field 跳转,纯文本汇总
+ux-029,Accessibility,Medium,all,紧凑组件语义,chip/badge/图标按钮有 aria-label,只有视觉没有语义,aria-label=删除,i class=icon
+ux-030,Accessibility,Medium,all,badge 更新可感知,aria-live=polite 播报,静默变更数字,aria-live=polite,无 live region

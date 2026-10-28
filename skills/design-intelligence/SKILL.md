@@ -400,59 +400,84 @@ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
 
 ---
 
-## 十、UX 硬规则速查（按严重度排序）
+## 十、规则检索（数据驱动，不背规则）
 
-以下每条都是「违反了就是缺陷」级别，不是风格偏好。
+**本 skill 的规则库在 `data/` 下，用 `scripts/search.py` 检索。** 不要把规则背进上下文，查一次只加载相关的几条。
 
-### Critical（4 条，不可妥协）
+```
+design-intelligence/
+├── SKILL.md              本文件：判据 + 怎么查
+├── data/
+│   ├── ux-rules.csv        30 条 UX 硬规则（Do/Don't + 正反例 + 严重度）
+│   ├── page-layouts.csv    24 种页面布局（admin 8 / pc 8 / mobile 8）
+│   ├── colors.csv          15 套配色（按场景与产品类型）
+│   ├── typography.csv      12 组字体配对
+│   ├── styles.csv          12 种视觉风格（含适用/避免）
+│   └── dials.csv           10 组三拨盘预设
+└── scripts/search.py     检索（零依赖，仅标准库）
+```
 
-| # | 规则 | ✅ Do | ❌ Don't |
-|---|---|---|---|
-| 1 | **对比度** | 正文对背景 ≥ 4.5:1，大字 ≥ 3:1 | 浅灰文字配白底、低饱和撞色 |
-| 2 | **键盘可达** | 所有交互元素 Tab 可达、顺序合理 | 用 div 做按钮、`tabindex="-1"` 藏关键操作 |
-| 3 | **焦点不被遮挡** | sticky 头部留出焦点滚动空间（`scroll-margin-top`） | 焦点元素被固定头部盖住 |
-| 4 | **最小点击尺寸** | 触屏 ≥ 44×44，桌面 ≥ 32×32 | 16px 的图标当按钮 |
+### 10.1 怎么查
 
-### High（后台系统最常犯的 17 条）
+```bash
+# 列出所有域与条数
+python scripts/search.py --list-domains
 
-| # | 规则 | ✅ Do | ❌ Don't |
-|---|---|---|---|
-| 5 | **焦点可见** | 自定义 focus ring（`box-shadow`） | `outline: none` 而不给替代 |
-| 6 | **不能只靠颜色** | 颜色 + 图标/文字/线型 | 红绿两个色块表示状态 |
-| 7 | **输入框有 label** | 每个字段有可见 label | placeholder 当 label |
-| 8 | **错误就近显示** | 错误紧跟字段下方 | 所有错误统一堆在页面顶部 |
-| 9 | **提交反馈** | 按钮 loading + 结果提示 | 点了没反应 |
-| 10 | **确认弹窗** | 破坏性操作二次确认并说明后果 | 直接执行删除 |
-| 11 | **无横向滚动** | 内容自适应容器宽度 | 固定 px 宽容器在小屏溢出 |
-| 12 | **不禁缩放** | 允许用户缩放 | `user-scalable=no` |
-| 13 | **正文可读** | ≥ 14px（移动端 ≥16px） | 12px 正文 |
-| 14 | **内容不跳动** | 图片预留宽高、骨架屏行数匹配 | 加载完内容撑开（CLS > 0.1） |
-| 15 | **z-index 有层级表** | 定义 dropdown 1000 / sticky 1100 / modal 1300 / toast 1400 | 随手写 `z-index: 9999` |
-| 16 | **hover 不是唯一交互** | 触屏用 click/tap | 关键信息只在 hover 时显示 |
-| 17 | **loading 有反馈** | 骨架屏或 spinner，延迟 300ms 显示 | 空白冻结 |
-| 18 | **尊重减少动效** | 支持 `prefers-reduced-motion` | 忽略系统设置 |
-| 19 | **动效克制** | 一屏最多 1–2 个进场动画 | 每个元素都 animate |
-| 20 | **返回行为可预测** | 保留浏览历史 | 用 `location.replace` 破坏后退 |
-| 21 | **长 token 可断行** | URL、哈希、长 ID 用 `word-break: break-all` 或 `overflow-wrap: anywhere` | 长串撑破容器 |
+# 按域查（推荐：一个明确意图 + 2-5 个词）
+python scripts/search.py "表单 错误" --domain ux
+python scripts/search.py "移动 底部导航" --domain layout
+python scripts/search.py "深色 对比度" --domain ux
+python scripts/search.py "SaaS 蓝" --domain color
+python scripts/search.py "后台 字体" --domain type
+python scripts/search.py "电商 App" --domain style
 
-### 专业级补充（容易被忽略，但在评审里会被指出）
+# 按场景过滤（admin / pc / mobile）
+python scripts/search.py "登录" --domain layout -c mobile
 
-| # | 规则 | 说明 |
+# 限制条数
+python scripts/search.py "动效" --domain ux -n 3
+```
+
+### 10.2 查询契约（照这个用，不然查不准）
+
+| 规则 | 说明 |
+|---|---|
+| **一次一个主要意图** | 「表单 错误」✅ ；「表单 错误 动效 配色 字体」❌ |
+| **2–5 个关键词** | 太少（"设计"）或太多都会失焦 |
+| **优先指定 `--domain`** | 不指定会跨域搜索，容易命中无关条目 |
+| **查空只重试一次** | 换更窄的词，或补 `--domain` / `-c` |
+| **仍然空就如实说** | **不要编造规则、数值或配色** |
+
+**查不到时的正确回答**：
+> 规则库里没有「X」的匹配。以下是我基于通用原则的判断（非库内依据）：……
+
+### 10.3 不可妥协的 4 条（常驻，不查也知道）
+
+这四条违反即缺陷，属于任何场景都不能让步的底线：
+
+| # | 规则 | 底线 |
 |---|---|---|
-| 22 | **关键文本不截断** | 截断必须保留完整版本的访问路径（Tooltip / 详情页），不能只 `ellipsis` 了事 |
-| 23 | **文字可重排** | 用户放大到 200% 或加大字间距时，内容不丢、不重叠 |
-| 24 | **状态切换可取消** | 快速连点时，前一个过渡能被打断，不排队播放 |
-| 25 | **不能只靠拖拽** | 拖拽排序/滑块必须有键盘或按钮替代 |
-| 26 | **认证不靠记忆** | 登录/验证不能强制用户记忆或解谜，支持密码管理器粘贴 |
-| 27 | **轮播可暂停** | 自动轮播的内容必须能暂停，且默认不自动播放 |
-| 28 | **错误汇总可聚焦** | 表单顶部错误汇总要能 Tab 到，并跳转到对应字段 |
-| 29 | **紧凑组件的语义** | 小尺寸 chip/badge/图标按钮必须有 `aria-label` 或可见文字 |
-| 30 | **badge 更新可感知** | 未读数变化时用 `aria-live="polite"` 播报，不要静默变更 |
+| 1 | **对比度** | 正文 ≥ 4.5:1，大字 ≥ 3:1 |
+| 2 | **键盘可达** | 所有交互 Tab 可达、顺序合理 |
+| 3 | **焦点不被遮挡** | sticky 头部留 `scroll-margin-top` |
+| 4 | **最小点击尺寸** | 触屏 ≥ 44×44，桌面 ≥ 32×32 |
 
-### 用法
+其余 26 条（焦点可见、不能只靠颜色、输入框有 label、错误就近、内容不跳动、长 token 断行、状态切换可取消、认证不靠记忆……）全部在 `ux-rules.csv` 里，**评审时按严重度筛一遍**：
 
-- **评审 UI 时按 1→30 顺序过**，前面不过不要看后面
-- 这 30 条与 `ui-ux-decision-guide`（选什么控件）互补，不重复
+```bash
+# 只看 Critical + High
+python scripts/search.py "Critical High" --domain ux -n 30
+```
+
+### 10.4 三种场景的入口
+
+| 场景 | 查什么 |
+|---|---|
+| **后台管理系统** | `--domain layout -c admin` / `--domain dial` 里 dia-01~04 |
+| **PC 前台（官网/营销页）** | `--domain layout -c pc` / 页面规范见 `frontend-marketing-pages` |
+| **移动端前台** | `--domain layout -c mobile` / 兼容问题见 `mobile-responsive-layout` |
+
+**三者的设计目标完全不同**：后台求效率与数据密度，前台求转化与品牌，移动端求单手操作与首屏冲击。**不要把后台的规范套到官网首页上。**
 
 ---
 

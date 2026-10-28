@@ -1,0 +1,16 @@
+id,context,product_type,mood,primary,bg,surface,text,notes
+col-01,admin,通用后台,克制专业,#1677ff,#f5f5f5,#ffffff,#000000e0,AntD 默认；语义色固定
+col-02,admin,金融数据,冷静可信,#0958d9,#f5f5f5,#ffffff,#000000e0,深蓝；数字 tabular-nums；红仅负向
+col-03,admin,运维监控深色,高对比,#1668dc,#000000,#141414,#ffffffd9,深色下饱和降一档；边框 #424242
+col-04,admin,医疗健康,洁净安心,#13a8a8,#f6ffed,#ffffff,#000000e0,青绿；避免刺激红；留白多
+col-05,pc,SaaS 官网,现代简洁,#1677ff,#ffffff,#fafafa,#000000d9,浅底为主；Hero 可渐变；CTA 实心主色
+col-06,pc,开发者工具,极简高对比,#000000,#ffffff,#f5f5f5,#000000,黑主色+等宽；代码块深底
+col-07,pc,电商零售,活力信任,#ff4d4f,#ffffff,#fff7f6,#000000d9,红仅价格与CTA；其余中性
+col-08,pc,教育,友好可靠,#2f54eb,#f0f5ff,#ffffff,#000000d9,蓝为主；强调浅蓝底；插图暖色
+col-09,pc,创意设计,大胆,#722ed1,#ffffff,#f9f0ff,#000000d9,紫色；可高对比；动效可丰富
+col-10,pc,金融官网,稳重,#1d39c4,#ffffff,#f0f5ff,#000000d9,深蓝；数字强调；避免夸张渐变
+col-11,mobile,内容社区,轻松,#eb2f96,#ffffff,#fff0f6,#000000d9,品红；大圆角；图片驱动
+col-12,mobile,电商 App,促转化,#ff4d4f,#f5f5f5,#ffffff,#000000d9,价格红；tab 主色高亮；按钮>=48
+col-13,mobile,工具类,安静,#1677ff,#ffffff,#fafafa,#000000d9,低饱和；内容为主；少色块
+col-14,mobile,健康运动,活力,#52c41a,#f6ffed,#ffffff,#000000d9,绿色活力；进度用色阶
+col-15,all,深色模式通用,低对比舒适,#1668dc,#000000,#141414,#ffffffd9,不用纯白文字；边框 #424242
