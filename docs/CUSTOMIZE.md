@@ -15,7 +15,7 @@
 | 脱敏规则 | `api-contract-design` 第三节 |
 | 部署方式 | `deployment-ops` 第四节（SSH）或第三节（Docker） |
 
-**改 skill 不用重启 DSH，改 preset 要重启。**
+**改 skill 与 preset 都不用重启：刷新页面即可。** 下拉里看不到时再重启。
 
 ---
 
@@ -151,7 +151,7 @@ skill 是热加载的，存盘即生效。
    如果 catalog 里有但它不加载，通常是 description 写得太抽象。加上用户实际会说的话（"弹窗""抽屉""分页"这种）。
 
 5. **preset 改了吗**
-   改 preset 之后**必须重启 DSH**，改 skill 不用。
+   改 preset 之后**刷新页面**即可；看不到再重启 DSH。
 
 ---
 

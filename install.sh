@@ -70,7 +70,7 @@ echo
 echo "✅ 安装完成"
 echo
 echo "下一步："
-echo "  1. 重启 DSH                （skills 已热加载，但 preset 需要重启才出现在模式列表）"
+echo "  1. 刷新 DSH 页面            （preset 与 skills 都是热加载；看不到再重启进程）"
 echo "  2. 模式下拉里选择「Web开发模式」"
 echo "  3. 设为默认（可选）：编辑 $DSH_HOME/settings.yaml"
 echo "       agent-presets:"

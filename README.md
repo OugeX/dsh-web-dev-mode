@@ -57,7 +57,8 @@ bash install.sh
 
 重启 DSH → 模式下拉里选「Web开发模式」。
 
-> 技能是热加载的，放进去立即生效；**只有 preset 需要重启**。
+> 技能和 preset **都是热加载**：放进去后刷新页面即可，无需重启 DSH。
+> 如果下拉里仍看不到，再重启一次（个别版本的前端列表有缓存）。
 
 想设为默认：`~/.dsh/settings.yaml`
 
@@ -218,7 +219,7 @@ agent-presets:
 | **跨平台** | preset 里用 `!!js process.platform` 判断，Windows 自动用 pwsh、Linux 自动用 bash，同一份配置两边跑 |
 | **插件依赖** | 17 个 `@deepseek-ai/dsh-*` 包，标准 DSH 安装自带 |
 | **skill 复用** | 12 个技能装在 `~/.dsh/skills/`，**全局可用**，不装 preset 也能在别的模式下单独调用 |
-| **热加载** | 改 skill 不用重启；改 preset 要重启 |
+| **热加载** | skill 与 preset 都是放进去 + 刷新页面即生效；改完看不到再重启 |
 
 ---
 
