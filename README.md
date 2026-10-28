@@ -111,7 +111,7 @@ agent-presets:
 
 ---
 
-## 15 个技能
+## 16 个技能
 
 | 技能 | 解决什么 |
 |---|---|
@@ -130,6 +130,7 @@ agent-presets:
 | **form-design-spec** | 输入框八态与过渡参数、placeholder/help/error 三层文案、防跳动布局、必填标记、校验时机、特殊输入 |
 | **auth-pages-spec** | 登录/注册/找回密码完整流程、失败模糊提示防枚举、验证码倒计时、密码强度、协议合规 |
 | **async-loading-stability** | 骨架屏行数=pageSize、表格 `table-layout:fixed`、换页不清空、图片 aspect-ratio、CLS < 0.1 |
+| **motion-animation-spec** | 时长分级上限 400ms、退出=进入×0.7、弹窗 0.95 缩放、toast 8px、只动 transform/opacity |
 
 ---
 
@@ -202,7 +203,7 @@ agent-presets:
 ├── presets/web-dev/
 │   ├── preset.yml              模式名与描述
 │   └── agent.cordis.yml        persona + 15 个插件条目
-├── skills/                     15 个技能
+├── skills/                     16 个技能
 │   ├── web-project-bootstrap/SKILL.md
 │   ├── mysql-schema-design/SKILL.md
 │   └── ...
@@ -232,7 +233,7 @@ agent-presets:
 
 这个仓库的价值不是"再多一份规范"，而是**把规范变成了可执行的判据和拦截**。
 
-15 个技能，约 14.8 万字符，每一条都是踩过坑之后写下的。
+16 个技能，约 15.5 万字符，每一条都是踩过坑之后写下的。
 
 **Star ⭐ 一个，下次建新项目时省下的返工就不止这点时间。**
 
