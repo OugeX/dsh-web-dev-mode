@@ -28,7 +28,7 @@
 
 ## 它是什么
 
-**12 个可加载技能 + 1 套行为约束。**
+**14 个可加载技能 + 1 套行为约束。**
 
 和「往对话里贴一段规范」的区别：
 
@@ -111,7 +111,7 @@ agent-presets:
 
 ---
 
-## 12 个技能
+## 14 个技能
 
 | 技能 | 解决什么 |
 |---|---|
@@ -126,7 +126,9 @@ agent-presets:
 | **deployment-ops** | Docker 复用容器、Windows 无官方 Redis 的替代、**SSH 直连部署**、Linux 性能调优 |
 | **api-contract-design** | 三套 DTO 视图模型、脱敏是权限问题、公共/私有配置分层、批量操作单接口 |
 | **ui-ux-decision-guide** | 弹窗还是抽屉（**判据 + 尺寸表**）、六种提示形态、要不要搜索分页、页面骨架 |
-| **mobile-responsive-layout** | `100dvh` 替代 `100vh`、iOS 微信 `innerHeight` 不变、安全区域、滚动穿透、1px |
+| **mobile-responsive-layout** | `100dvh` 替代 `100vh`、iOS 微信 `innerHeight` 不变、安全区域、滚动穿透、1px、**聊天输入区被键盘顶飞** |
+| **form-design-spec** | 输入框八态与过渡参数、placeholder/help/error 三层文案、防跳动布局、必填标记、校验时机、特殊输入 |
+| **auth-pages-spec** | 登录/注册/找回密码完整流程、失败模糊提示防枚举、验证码倒计时、密码强度、协议合规 |
 
 ---
 
@@ -199,7 +201,7 @@ agent-presets:
 ├── presets/web-dev/
 │   ├── preset.yml              模式名与描述
 │   └── agent.cordis.yml        persona + 15 个插件条目
-├── skills/                     12 个技能
+├── skills/                     14 个技能
 │   ├── web-project-bootstrap/SKILL.md
 │   ├── mysql-schema-design/SKILL.md
 │   └── ...
@@ -229,7 +231,7 @@ agent-presets:
 
 这个仓库的价值不是"再多一份规范"，而是**把规范变成了可执行的判据和拦截**。
 
-12 个技能，约 12.6 万字符，每一条都是踩过坑之后写下的。
+14 个技能，约 14.2 万字符，每一条都是踩过坑之后写下的。
 
 **Star ⭐ 一个，下次建新项目时省下的返工就不止这点时间。**
 

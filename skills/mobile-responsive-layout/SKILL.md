@@ -197,7 +197,163 @@ body.keyboard-open .chat-input {
 
 ---
 
-## 六、滚动相关的三个坑
+## 六、聊天式输入区（客服窗口 / IM）
+
+这是 iOS 键盘问题**最严重的场景**，也是 agent 最容易做错的地方。
+
+### 6.1 症状
+
+| 平台 | 表现 |
+|---|---|
+| iOS 微信 | 聚焦输入框后**整页被顶上去**，输入框跑到屏幕中部；收起键盘后不回位 |
+| iOS Safari | 输入框被键盘遮住，或页面异常上推 |
+| Android 微信 | 部分机型输入框被完全遮挡 |
+| 全部 | 消息列表滚不到最新一条 |
+
+### 6.2 根因
+
+**用 `position: fixed; bottom: 0` 做输入栏。**
+
+- `fixed` 元素相对**布局视口**定位，而键盘改变的是**视觉视口**
+- iOS 微信键盘弹起时**布局视口不变**，`fixed` 元素不会跟着上移；但浏览器又把可视区域上推 → 输入框被「推走」
+- 再叠加 `window.innerHeight` 在 iOS 微信里不变化 → 用 JS 算高度也算不对
+
+### 6.3 正解：flex 三段式 + `100dvh`
+
+```html
+<div class="chat">
+  <header class="chat-header">客服</header>
+  <main class="chat-list">      <!-- 消息列表 -->
+  </main>
+  <footer class="chat-input">   <!-- 输入区 -->
+  </footer>
+</div>
+```
+
+```css
+.chat {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;                    /* 兜底 */
+  height: -webkit-fill-available;   /* iOS 老版本 */
+  height: 100dvh;                   /* 现代浏览器 */
+}
+
+.chat-header { flex-shrink: 0; }
+
+.chat-list {
+  flex: 1;
+  min-height: 0;                    /* ★ 关键，最容易漏 */
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;     /* 阻止滚动链传导到 body */
+}
+
+.chat-input {
+  flex-shrink: 0;
+  padding-bottom: calc(8px + env(safe-area-inset-bottom));
+}
+```
+
+**`min-height: 0` 是整段代码里最关键的一行。** flex 子项默认 `min-height: auto`，不会收缩到内容高度以下 —— 漏了它，消息列表会撑破容器，把输入栏挤出屏幕。
+
+### 6.4 键盘弹起时
+
+换成 flex 布局后，**浏览器会自动重排，输入栏自然跟着键盘上移，不需要任何 JS**。
+
+只有两种情况需要补：
+
+**① iOS 微信里 `100dvh` 有时不更新**
+
+```js
+const vv = window.visualViewport
+if (vv) {
+  const sync = () => {
+    document.documentElement.style.setProperty('--app-height', `${vv.height}px`)
+    scrollToBottom()
+  }
+  vv.addEventListener('resize', sync)
+  vv.addEventListener('scroll', sync)   // iOS 微信有时只触发 scroll
+  sync()
+}
+```
+
+```css
+.chat { height: var(--app-height, 100dvh); }
+```
+
+**② 需要滚到最新消息**（见 6.5）
+
+### 6.5 消息列表滚动的三条规则
+
+```js
+function scrollToBottom(force = false) {
+  const el = listRef.current
+  if (!el) return
+  const distance = el.scrollHeight - el.scrollTop - el.clientHeight
+  if (force || distance < 60) el.scrollTop = el.scrollHeight
+}
+```
+
+| 场景 | 行为 |
+|---|---|
+| 进入页面 | 强制滚到底（`force = true`） |
+| 新消息到达，用户在底部 | 自动跟随 |
+| 新消息到达，**用户正在上滑看历史** | **不要强行拉回**，显示「↓ 有新消息」浮标 |
+| 键盘弹起 / 收起 | 若之前在底部，滚到底 |
+
+**强行滚回是最招人烦的体验之一**——用户正在看历史消息，一条新消息把他拽回去。
+
+### 6.6 输入框本身
+
+- `textarea` 自适应高度：1 行起，最多 4 行，超出后内部滚动
+  ```js
+  ta.style.height = 'auto'
+  ta.style.height = Math.min(ta.scrollHeight, 4 * lineHeight) + 'px'
+  ```
+- 字号 **≥ 16px**（防 iOS 聚焦放大）
+- 发送按钮 **44×44**
+- 桌面端：Enter 发送、Shift+Enter 换行
+- **移动端：Enter 换行**（不要 Enter 发送，用户打不出换行了）
+- 发送中按钮禁用 + loading
+
+### 6.7 明确不要做
+
+| ❌ 做法 | 后果 |
+|---|---|
+| `position: fixed` 做输入栏 | iOS 被顶飞 |
+| 用 `window.innerHeight` 算高度 | iOS 微信键盘弹起时不变 |
+| 用 `100vh` | 含地址栏高度，底部被裁 |
+| `body { overflow: hidden }` + 内部滚动 | iOS 上滚动卡顿、穿透 |
+| 用 `scrollIntoView()` 滚消息 | 会连带滚动整个页面 |
+| 页面整体监听 `resize` 重算 | iOS 键盘弹起不一定触发 resize |
+
+### 6.8 验收清单
+
+- [ ] iOS Safari：聚焦输入框，输入栏紧贴键盘上方，页面不整体上推
+- [ ] iOS 微信：同上
+- [ ] Android Chrome / 微信：输入框不被遮挡
+- [ ] 收起键盘后布局完全恢复
+- [ ] `.chat-list` 有 `min-height: 0`
+- [ ] 长列表滚动流畅，不带动 body 滚动
+- [ ] 在底部时新消息自动跟随
+- [ ] 上滑看历史时新消息**不**强行拉回，出现新消息浮标
+- [ ] 输入框字号 ≥ 16
+- [ ] 发送按钮 ≥ 44×44
+- [ ] 底部有 `env(safe-area-inset-bottom)`
+
+### 6.9 反面清单
+
+1. ❌ 用 `position: fixed` 做输入栏
+2. ❌ 用 `window.innerHeight` 或 `100vh` 算聊天区高度
+3. ❌ flex 子项漏掉 `min-height: 0`
+4. ❌ 新消息到达时无条件 `scrollTop = scrollHeight`
+5. ❌ 用 `scrollIntoView()` 滚消息列表
+6. ❌ 移动端 Enter 发送（用户无法换行）
+
+---
+
+## 七、滚动相关的三个坑
 
 ### 6.1 弹窗打开时底层页面还能滚（滚动穿透）
 
@@ -236,7 +392,7 @@ el.addEventListener('touchstart', handler, { passive: true })
 
 ---
 
-## 七、输入框的两个致命细节
+## 八、输入框的两个致命细节
 
 ### 7.1 字体小于 16px 会触发 iOS 自动放大
 
@@ -260,7 +416,7 @@ input, textarea {
 
 ---
 
-## 八、1px 边框（Retina 屏变粗）
+## 九、1px 边框（Retina 屏变粗）
 
 ```css
 /* 方案：伪元素 + scale */
@@ -288,7 +444,7 @@ DPR = 3 时用 `scaleY(0.3333)`，用媒体查询适配：
 
 ---
 
-## 九、布局约束（硬指标）
+## 十、布局约束（硬指标）
 
 | 项 | 约束 | 理由 |
 |---|---|---|
@@ -312,7 +468,7 @@ font-family: -apple-system, BlinkMacSystemFont, "PingFang SC",
 
 ---
 
-## 十、iOS / Android 差异清单（按踩坑频率排）
+## 十一、iOS / Android 差异清单（按踩坑频率排）
 
 | # | 问题 | iOS | Android | 修复 |
 |---|---|---|---|---|
@@ -331,7 +487,7 @@ font-family: -apple-system, BlinkMacSystemFont, "PingFang SC",
 
 ---
 
-## 十一、真机调试（Windows 开发者的现实）
+## 十二、真机调试（Windows 开发者的现实）
 
 ### Android —— 最方便
 
@@ -375,7 +531,7 @@ Mac Safari：开发 → 你的 iPhone → 选中页面
 
 ---
 
-## 十二、测试清单（上线前过一遍）
+## 十三、测试清单（上线前过一遍）
 
 ### 视口与滚动
 
@@ -416,7 +572,7 @@ Mac Safari：开发 → 你的 iPhone → 选中页面
 
 ---
 
-## 十三、反面清单
+## 十四、反面清单
 
 1. ❌ viewport 漏了 `viewport-fit=cover`，然后写 `env()` 却不生效
 2. ❌ 用 `100vh` 做全屏容器
