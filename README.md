@@ -111,7 +111,7 @@ agent-presets:
 
 ---
 
-## 16 个技能
+## 21 个技能
 
 | 技能 | 解决什么 |
 |---|---|
@@ -131,6 +131,11 @@ agent-presets:
 | **auth-pages-spec** | 登录/注册/找回密码完整流程、失败模糊提示防枚举、验证码倒计时、密码强度、协议合规 |
 | **async-loading-stability** | 骨架屏行数=pageSize、表格 `table-layout:fixed`、换页不清空、图片 aspect-ratio、CLS < 0.1 |
 | **motion-animation-spec** | 时长分级上限 400ms、退出=进入×0.7、弹窗 0.95 缩放、toast 8px、只动 transform/opacity |
+| **table-advanced** | 列宽策略、固定列判断（总宽>1200）、行内编辑回滚、树形表格不分页、跨页选择保持、虚拟滚动门槛 |
+| **data-visualization** | 图表选型决策树、柱状图基线为 0、禁双 Y 轴、饼图≤5 类、色盲安全色板、缺数据不当 0 |
+| **rich-media-input** | 富文本该不该用、Word 粘贴清洗、上传三触发、并发 3、真进度、分片断点续传 |
+| **notification-center** | 未读数定义与清零时机、99+ 与 0 不显示、乐观更新、轮询 60s 后台停、多标签单连接 |
+| **i18n-spec** | 文案膨胀（德 +60%）、逻辑属性、RTL 镜像、Intl 格式化、复数规则、禁拼接句子 |
 
 ---
 
@@ -203,7 +208,7 @@ agent-presets:
 ├── presets/web-dev/
 │   ├── preset.yml              模式名与描述
 │   └── agent.cordis.yml        persona + 15 个插件条目
-├── skills/                     16 个技能
+├── skills/                     21 个技能
 │   ├── web-project-bootstrap/SKILL.md
 │   ├── mysql-schema-design/SKILL.md
 │   └── ...
@@ -233,7 +238,7 @@ agent-presets:
 
 这个仓库的价值不是"再多一份规范"，而是**把规范变成了可执行的判据和拦截**。
 
-16 个技能，约 15.5 万字符，每一条都是踩过坑之后写下的。
+21 个技能，约 19.5 万字符，每一条都是踩过坑之后写下的。
 
 **Star ⭐ 一个，下次建新项目时省下的返工就不止这点时间。**
 
