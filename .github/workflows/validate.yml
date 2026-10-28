@@ -1,0 +1,61 @@
+name: validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 校验 preset 结构
+        run: |
+          test -f presets/web-dev/agent.cordis.yml
+          test -f presets/web-dev/preset.yml
+          grep -q "id: persona" presets/web-dev/agent.cordis.yml
+          grep -q "name:" presets/web-dev/preset.yml
+          echo "preset OK"
+
+      - name: 校验每个 skill 的 frontmatter
+        run: |
+          fail=0
+          for d in skills/*/; do
+            name=$(basename "$d")
+            f="$d/SKILL.md"
+            if [ ! -f "$f" ]; then
+              echo "FAIL $name: 缺少 SKILL.md"; fail=1; continue
+            fi
+            if [ "$(head -1 "$f")" != "---" ]; then
+              echo "FAIL $name: 首行不是 ---"; fail=1; continue
+            fi
+            if ! grep -q "^name: $name$" "$f"; then
+              echo "FAIL $name: name 字段与实际目录名不符"; fail=1; continue
+            fi
+            if ! sed -n '2,10p' "$f" | grep -q "^description: "; then
+              echo "FAIL $name: 缺少 description"; fail=1; continue
+            fi
+            echo "OK   $name"
+          done
+          exit $fail
+
+      - name: 检查绝对路径残留
+        run: |
+          if grep -rnE 'C:\\|D:\\|/Users/[a-zA-Z]|/home/[a-z]' \
+               --include='*.md' --include='*.yml' \
+               presets skills | grep -v 'Windows 盘符' ; then
+            echo "FAIL: 发现本机绝对路径"
+            exit 1
+          fi
+          echo "无绝对路径 OK"
+
+      - name: 检查密钥泄漏
+        run: |
+          if grep -rniE '(password|secret|token|api[_-]?key)\s*[:=]\s*["'\''][^"'\'']{8,}' \
+               --include='*.yml' presets | grep -vE '(DB_PASS|JWT_SECRET|MYSQL_ROOT_PASSWORD|change-me|dev-only)'; then
+            echo "FAIL: 疑似硬编码密钥"
+            exit 1
+          fi
+          echo "无密钥 OK"

@@ -190,8 +190,11 @@ agent-presets:
 
 ```
 .
-├── install.sh                  Linux/macOS 安装
-├── install.ps1                 Windows 安装
+├── README.md
+├── LICENSE                     MIT
+├── CONTRIBUTING.md             贡献标准（唯一标准：来自真实踩过的坑）
+├── install.sh                  Linux/macOS 安装（含安装后校验）
+├── install.ps1                 Windows 安装（含安装后校验）
 ├── presets/web-dev/
 │   ├── preset.yml              模式名与描述
 │   └── agent.cordis.yml        persona + 15 个插件条目
@@ -199,9 +202,11 @@ agent-presets:
 │   ├── web-project-bootstrap/SKILL.md
 │   ├── mysql-schema-design/SKILL.md
 │   └── ...
-└── docs/
-    ├── DESIGN.md               设计取舍与为什么这么拆
-    └── CUSTOMIZE.md            改哪里、加技能、调阈值
+├── docs/
+│   ├── DESIGN.md               设计取舍：为什么这么拆
+│   └── CUSTOMIZE.md            改哪里、加技能、调阈值
+└── .github/workflows/
+    └── validate.yml            CI：frontmatter、绝对路径、密钥泄漏
 ```
 
 ---
