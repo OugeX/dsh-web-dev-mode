@@ -111,7 +111,7 @@ agent-presets:
 
 ---
 
-## 21 个技能
+## 22 个技能
 
 | 技能 | 解决什么 |
 |---|---|
@@ -136,6 +136,7 @@ agent-presets:
 | **rich-media-input** | 富文本该不该用、Word 粘贴清洗、上传三触发、并发 3、真进度、分片断点续传 |
 | **notification-center** | 未读数定义与清零时机、99+ 与 0 不显示、乐观更新、轮询 60s 后台停、多标签单连接 |
 | **i18n-spec** | 文案膨胀（德 +60%）、逻辑属性、RTL 镜像、Intl 格式化、复数规则、禁拼接句子 |
+| **design-intelligence** | 十类规则影响优先级、设计 tokens（色阶/字号/间距/圆角/阴影）、密度-对比-动效三拨盘、MASTER.md 持久化、4 种后台风格、30 条 UX 硬规则 |
 
 ---
 
@@ -208,7 +209,7 @@ agent-presets:
 ├── presets/web-dev/
 │   ├── preset.yml              模式名与描述
 │   └── agent.cordis.yml        persona + 15 个插件条目
-├── skills/                     21 个技能
+├── skills/                     22 个技能
 │   ├── web-project-bootstrap/SKILL.md
 │   ├── mysql-schema-design/SKILL.md
 │   └── ...
@@ -238,7 +239,7 @@ agent-presets:
 
 这个仓库的价值不是"再多一份规范"，而是**把规范变成了可执行的判据和拦截**。
 
-21 个技能，约 19.5 万字符，每一条都是踩过坑之后写下的。
+22 个技能，约 20 万字符，每一条都是踩过坑之后写下的。
 
 **Star ⭐ 一个，下次建新项目时省下的返工就不止这点时间。**
 
