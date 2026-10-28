@@ -1,5 +1,21 @@
 # 提交到 DSH 市场
 
+## 已提交（2026-10-28）
+
+| 市场 | PR | 状态 |
+|---|---|---|
+| [awesome-dsh-plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin)（21k stars） | [#10150](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin/pull/10150) | open |
+| [awesome-dsh-presets](https://github.com/hackerFish/awesome-dsh-presets)（preset 专收） | [#1](https://github.com/hackerFish/awesome-dsh-presets/pull/1) | open |
+
+提交形式：
+- 大市场：`data/plugins/OugeX__dsh-web-dev-mode.yml`，`category: workflow`
+- preset 库：`presets/web-dev/{agent.cordis.yml,preset.yml}` + 两个 README 清单各加一行
+
+**校验结果**：`validate-presets.mjs --harness <node_modules>` → `✅ web-dev（含包存在性校验）`，0 错误。
+
+---
+
+
 > **DSH 没有官方内置市场。** 源码 `packages/preset/agent-presets/` 里只有本地 preset 的扫描与创作能力（`discovery.ts` / `authoring.ts`），没有 registry、publish 或 marketplace 模块；`dsh` CLI 也只有 `web` 和 `plugin` 两个子命令。
 >
 > 所以「提交到市场」= 提交到**社区维护**的收录仓库或本地市场插件。
