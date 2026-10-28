@@ -45,7 +45,7 @@
 ## 30 秒开始
 
 ```bash
-git clone https://github.com/<you>/dsh-web-dev-mode.git
+git clone https://github.com/OugeX/dsh-web-dev-mode.git
 cd dsh-web-dev-mode
 
 # Linux / macOS
