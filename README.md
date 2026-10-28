@@ -223,6 +223,27 @@ agent-presets:
 
 ---
 
+## 维护脚本
+
+| 脚本 | 作用 |
+|---|---|
+| `scripts/sync-pr.sh` | 把两个市场 PR 的内容同步到本地最新状态（技能数、preset 文件、README 清单行） |
+| `scripts/sync-pr.py` | 上面的实际实现，也可直接调用 |
+
+```bash
+export GH_TOKEN=ghp_xxx
+
+./scripts/sync-pr.sh --check    # 只检查，有差异返回 1
+./scripts/sync-pr.sh            # 实际同步
+./scripts/sync-pr.sh --dry-run  # 打印要改的内容，不写入
+```
+
+**幂等**：没有差异就不提交，重复跑不会产生空 commit。
+
+加完新 skill 后跑一次，就不会出现「PR 里还写着 12 个技能」这种过期。
+
+---
+
 ## 兼容性
 
 | 项 | 说明 |
